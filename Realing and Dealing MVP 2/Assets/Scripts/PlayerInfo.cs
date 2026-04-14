@@ -16,7 +16,7 @@ public class PlayerInfo : MonoBehaviour
     {
         GetPlayerProfileRequest getProfileRequest = new GetPlayerProfileRequest
         {
-            PlayFabId = LoginRegister.instance.playFabId,
+            //PlayFabId = LoginRegister.instance.playFabId,
             ProfileConstraints = new PlayerProfileViewConstraints
             {
                 ShowDisplayName = true

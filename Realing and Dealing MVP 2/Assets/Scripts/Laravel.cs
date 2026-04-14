@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Text;
 
 public class Laravel : MonoBehaviour
 {
+    /*
     private string apiUrl = "http://ReelingAndDealing-Laravel.test/players";
 
     void Start()
@@ -28,5 +30,5 @@ public class Laravel : MonoBehaviour
                 Debug.Log("API Response: " + jsonResponse);
             }
         }
-    }
+    }*/
 }
