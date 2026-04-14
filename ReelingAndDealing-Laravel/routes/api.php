@@ -1,7 +1,18 @@
-THIS_SHOULD_BREAK;
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/leaderboard', [AuthController::class, 'leaderboard']);
+
+/*Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/update-score', [AuthController::class, 'saveScore']);
+    Route::post('/update-sprite', [AuthController::class, 'saveSprite']);
+});*/
+
+/*use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -42,26 +53,4 @@ Route::post('/register', function (Request $request) {
     ]);
 
     return response()->json(['success' => true, 'user' => $user]);
-});
-
-
-/*Route::post('/register', function (Request $request) {
-
-    $user = User::create([
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
-
-    $token = $user->createToken('unity-token')->plainTextToken;
-
-    return response()->json([
-        'status' => 'success',
-        'token' => $token,
-        'user' => $user
-    ]);
-});*/
-
-
-//dont use middleware keyword right now as that requires
-//users to be authenticated, meaning they need CSRF token
-//which they dont have since this is the first time they go on.
+}); */

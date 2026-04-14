@@ -21,10 +21,10 @@ public class LoginRegister : MonoBehaviour
     void Awake() { instance = this; }
 
     //private string apiUrl = "http://ReelingAndDealing-Laravel.test/login"; //doesnt work in build
-    //private string apiUrl = "http://ReelingAndDealing-Laravel.test/api/login"; //doesnt work in build
+    private string apiUrl = "http://ReelingAndDealing-Laravel.test/api/login"; //doesnt work in build
     //private string apiUrl = "http://127.0.0.1:8000/api/register";
     //private string apiUrl = "http://ReelingAndDealing-Laravel.test/api/register"; //doesnt work in build
-    private string apiUrl = "https://ogoayc0xg6.sharedwithexpose.com/api/register";
+    //private string apiUrl = "https://ogoayc0xg6.sharedwithexpose.com/api/register";
 
 
     /*public void OnLoginButton()
