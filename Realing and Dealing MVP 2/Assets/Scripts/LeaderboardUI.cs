@@ -1,13 +1,13 @@
-using UnityEngine;
+    /*using UnityEngine;
 using TMPro;
 
 public class LeaderboardUI : MonoBehaviour
 {
     [Header("UI")]
     public GameObject leaderboardEntryPrefab;
-    public Transform leaderboardContainer;
+    public Transform laderboardContainer;
     //public TextMeshProUGUI statusText;
-    /*
+
     private void OnEnable()
     {
         RefreshLeaderboard();
@@ -42,5 +42,5 @@ public class LeaderboardUI : MonoBehaviour
                 //statusText.text = "Error: " + err;
             }
         ));
-    }*/
-}
+    }
+}*/
