@@ -422,30 +422,35 @@ public class GameManager : MonoBehaviour
     //------------------------END AND RESET-------------------
 
     ///TO hide hand, just hode all 3 decks
+    ///
+
+
     public void EndTurn()
     {
-        if(cardCounter >= 5)
+        if (cardCounter >= 5)
         {
             //Invoke("HideEventText", 0);
             Debug.Log("Out of hand space.");
             winLosePanel.SetActive(true);
             outOfBaitText.gameObject.SetActive(false);
-            Leaderboard.instance.SetLeaderboardEntry(playerController.points);
-            Leaderboard.instance.leaderboardCanvas.SetActive(true);
-            Leaderboard.instance.DisplayLeaderboard();
+            //Leaderboard.instance.SetLeaderboardEntry(playerController.points);
+            //Leaderboard.instance.leaderboardCanvas.SetActive(true);
+            //Leaderboard.instance.DisplayLeaderboard();
             fullHandText.text = "Boy howdy, you've reached your fishing quota!\nFinal Catch: " + playerController.points + " Trophy Points!";
         }
-        else if(playerController.baitCount <= 0)
+        else if (playerController.baitCount <= 0)
         {
             //nvoke("HideEventText", 0);
             Debug.Log("Out of bait.");
             winLosePanel.SetActive(true);
             fullHandText.gameObject.SetActive(false);
-            Leaderboard.instance.SetLeaderboardEntry(playerController.points);
-            Leaderboard.instance.leaderboardCanvas.SetActive(true);
-            Leaderboard.instance.DisplayLeaderboard();
+            //Leaderboard.instance.SetLeaderboardEntry(playerController.points);
+            //Leaderboard.instance.leaderboardCanvas.SetActive(true);
+            //Leaderboard.instance.DisplayLeaderboard();
             outOfBaitText.text = "Looks like them fishies emptied your tackle box.\n Final Catch: " + playerController.points + " Trophy Points!";
-        } else {
+        }
+        else
+        {
             isPlayerTurn = false;  // Set the turn flag to false when ending the turn
             Debug.Log("Turn Over, starting new turn");
             StartTurn();

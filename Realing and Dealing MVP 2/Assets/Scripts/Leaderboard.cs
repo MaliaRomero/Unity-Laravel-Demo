@@ -1,93 +1,122 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayFab;
-using PlayFab.ClientModels;
 using TMPro;
-using PlayFab.MultiplayerModels;
+using UnityEngine.Events;
+using UnityEngine.Networking; //this
+using System.Text;
+//using PlayFab;
+//using PlayFab.ClientModels;
+//using PlayFab.MultiplayerModels;
 
 public class Leaderboard : MonoBehaviour
 {
+    public TMP_InputField nameInput;
+
     public GameObject leaderboardCanvas;
+
+    public GameObject loginCanvas;
     public GameObject[] leaderboardEntries;
+    private string savedToken;
+
+    private string baseUrl = "http://localhost:8000/api";
+
+    //Call Laravel API
 
     public static Leaderboard instance;
+
+    [System.Serializable]
+    public class AuthResponse
+    {
+        public string token;
+    }
+
+
     void Awake() { instance = this; }
 
-    public void OnLoggedIn()
+    void Start()
     {
-        //leaderboardCanvas.SetActive(true);
-        //DisplayLeaderboard();
-        Debug.Log("Logged in.");
+        StartCoroutine(CallApi());
     }
 
-    public void DisplayLeaderboard ()
+    public void Login(string username)
     {
-        Debug.Log("Displaying Leaderboard");
-
-        GetLeaderboardRequest getLeaderboardRequest = new GetLeaderboardRequest
-        {
-            StatisticName = "HighestScore",
-            MaxResultsCount = 10
-        };
-
-        PlayFabClientAPI.GetLeaderboard(getLeaderboardRequest,
-            result => UpdateLeaderboardUI(result.Leaderboard),
-            error => Debug.Log(error.ErrorMessage)
-        );
+        StartCoroutine(LoginRoutine(username));
     }
 
-    void UpdateLeaderboardUI(List<PlayerLeaderboardEntry> leaderboard)
+    public void OnLoginButton()
     {
-        Debug.Log("Updating Leaderboard UI");
+        string name = nameInput.text;
+        loginCanvas.SetActive(false);
 
-        for (int x = 0; x < leaderboardEntries.Length; x++)
-        {
-            leaderboardEntries[x].SetActive(x < leaderboard.Count);
-            if (x >= leaderboard.Count) continue;
-            leaderboardEntries[x].transform.Find("PlayerName").GetComponent<TextMeshProUGUI>().text = (leaderboard[x].Position + 1) + ". " + leaderboard[x].DisplayName;
-
-            leaderboardEntries[x].transform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = ((int)leaderboard[x].StatValue).ToString();//("F2");
-        }
+        Login(name);
     }
 
-    public void SetLeaderboardEntry(int newScore)
+    IEnumerator LoginRoutine(string username)
     {
-        bool useLegacyMethod = false;
-        if (useLegacyMethod)
+        WWWForm form = new WWWForm();
+        form.AddField("username", username);
+        form.AddField("password", "test123"); // temporary
+
+        using (UnityWebRequest www = UnityWebRequest.Post($"{baseUrl}/login", form))
         {
-            ExecuteCloudScriptRequest request = new ExecuteCloudScriptRequest
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.Success)
             {
-                FunctionName = "UpdateHighScore",
-                FunctionParameter = new { score = newScore }
-            };
-            PlayFabClientAPI.ExecuteCloudScript(request,
-            result =>
-            {
-                Debug.Log(result);
-                DisplayLeaderboard();
-                Debug.Log(result.ToJson());
-            },
-            error =>
-            {
-                Debug.Log(error.ErrorMessage);
-                Debug.Log("ERROR");
+                AuthResponse response =
+                    JsonUtility.FromJson<AuthResponse>(www.downloadHandler.text);
+
+                savedToken = response.token;
+
+                Debug.Log("Login success");
+
+                StartCoroutine(CallApi()); // fetch leaderboard after login
             }
-            );
-        }
-        else
-        {
-
-            PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
+            else
             {
-                Statistics = new List<StatisticUpdate>
+                Debug.LogError(www.downloadHandler.text);
+            }
+        }
+    }
+
+
+    IEnumerator CallApi()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/leaderboard"))
+        {
+            yield return request.SendWebRequest(); //Get score
+
+            if (request.result == UnityWebRequest.Result.ConnectionError ||
+                request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("API Error: " + request.error);
+            }
+            else
+            {
+                string jsonResponse = request.downloadHandler.text;
+                LeaderboardWrapper data =
+                    JsonUtility.FromJson<LeaderboardWrapper>(jsonResponse);
+
+                foreach (var entry in data.items)
                 {
-                    new StatisticUpdate { StatisticName = "HighestScore", Value = newScore },
+                    Debug.Log(entry.username + " - " + entry.score);
                 }
-            },
-            result => { Debug.Log("User statistics updated"); },
-            error => { Debug.LogError(error.GenerateErrorReport()); }
-            );
+            }
         }
     }
 }
+
+[System.Serializable]
+public class LeaderboardEntry
+{
+    public string username;
+    public int score;
+}
+
+[System.Serializable]
+public class LeaderboardWrapper
+{
+    public LeaderboardEntry[] items;
+}
+*/

@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -7,7 +7,7 @@ using UnityEngine.Networking; //this
 using System.Text;
 
 // CSRF
-
+/*
 public class LoginRegister : MonoBehaviour
 {
     public TMP_InputField emailInput;
@@ -20,11 +20,8 @@ public class LoginRegister : MonoBehaviour
     public static LoginRegister instance;
     void Awake() { instance = this; }
 
-    //private string apiUrl = "http://ReelingAndDealing-Laravel.test/login"; //doesnt work in build
-    private string apiUrl = "http://ReelingAndDealing-Laravel.test/api/login"; //doesnt work in build
-    //private string apiUrl = "http://127.0.0.1:8000/api/register";
-    //private string apiUrl = "http://ReelingAndDealing-Laravel.test/api/register"; //doesnt work in build
-    //private string apiUrl = "https://ogoayc0xg6.sharedwithexpose.com/api/register";
+    
+    private string apiUrl = "http://127.0.0.1:8000/api/register";
 
 
     /*public void OnLoginButton()
@@ -34,7 +31,7 @@ public class LoginRegister : MonoBehaviour
 
         StartCoroutine(LoginRequest(email, password));
     }*/
-
+    /*
     public void OnRegisterButton()
     {
         Debug.Log("button clicked");
@@ -92,7 +89,7 @@ public class LoginRegister : MonoBehaviour
                 }*//*
             }
         }*/
-
+/*
     IEnumerator RegisterRequest(string email, string password)
     {
         Debug.Log("register request called");
@@ -170,4 +167,5 @@ public class LoginRegister : MonoBehaviour
     {
         displayText.text = text;
         displayText.color = color;
-    }*/
+    }
+(/)*/
