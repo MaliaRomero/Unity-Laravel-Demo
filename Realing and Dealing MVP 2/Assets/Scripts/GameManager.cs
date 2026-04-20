@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     public static PlayerController playerController;
 
+    public LaravelManager laravelManager;
+
     public Card card;
     public Deck deck;
 
@@ -431,6 +433,8 @@ public class GameManager : MonoBehaviour
         {
             //Invoke("HideEventText", 0);
             Debug.Log("Out of hand space.");
+            laravelManager.SendScore(playerController.points);
+            laravelManager.StopLeaderboardLoop();
             winLosePanel.SetActive(true);
             outOfBaitText.gameObject.SetActive(false);
             //Leaderboard.instance.SetLeaderboardEntry(playerController.points);
@@ -442,6 +446,8 @@ public class GameManager : MonoBehaviour
         {
             //nvoke("HideEventText", 0);
             Debug.Log("Out of bait.");
+            laravelManager.SendScore(playerController.points);
+            laravelManager.StopLeaderboardLoop();
             winLosePanel.SetActive(true);
             fullHandText.gameObject.SetActive(false);
             //Leaderboard.instance.SetLeaderboardEntry(playerController.points);

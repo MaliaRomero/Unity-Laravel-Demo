@@ -9,5 +9,4 @@ Route::get('/leaderboard', [AuthController::class, 'leaderboard']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update-score', [AuthController::class, 'saveScore']);
-    Route::post('/update-sprite', [AuthController::class, 'saveSprite']);
 });
