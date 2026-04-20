@@ -10,14 +10,20 @@ public class ApiClient : MonoBehaviour
     [Header("API Config")]
     [SerializeField] private string baseUrl = "http://127.0.0.1:8000/api";
 
-    [Header("Auth")]
-    public string AuthToken; // set after login
+    // ---------- MODELS ----------
 
     [Serializable]
-    public class AuthResponse
+    public class UserData
     {
-        public string token;
-        // public User user; // if you want to parse user too
+        public string username;
+        public string name;
+        public int score;
+    }
+
+    [Serializable]
+    public class LoginResponse
+    {
+        public UserData user;
     }
 
     [Serializable]
@@ -47,7 +53,7 @@ public class ApiClient : MonoBehaviour
 
     // ---------- LOGIN ----------
 
-    public IEnumerator Login(string username, string password, Action<AuthResponse> onSuccess, Action<string> onError)
+    public IEnumerator Login(string username, string password, Action<UserData> onSuccess, Action<string> onError)
     {
         WWWForm form = new WWWForm();
         form.AddField("username", username);
@@ -59,24 +65,24 @@ public class ApiClient : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                var json = www.downloadHandler.text;
-                Debug.Log("Login response: " + json);
+                Debug.Log("Login response: " + www.downloadHandler.text);
 
-                AuthResponse response = JsonUtility.FromJson<AuthResponse>(json);
+                LoginResponse response =
+                    JsonUtility.FromJson<LoginResponse>(www.downloadHandler.text);
 
-                if (!string.IsNullOrEmpty(response.token))
+                if (response != null && response.user != null)
                 {
-                    AuthToken = response.token;
-                    onSuccess?.Invoke(response);
+                    Debug.Log("Logged in as: " + response.user.username);
+                    onSuccess?.Invoke(response.user);
                 }
                 else
                 {
-                    onError?.Invoke("No token in response");
+                    onError?.Invoke("Invalid response format");
                 }
             }
             else
             {
-                Debug.LogError("Login error: " + www.error);
+                Debug.LogError("Login error: " + www.downloadHandler.text);
                 onError?.Invoke(www.downloadHandler.text);
             }
         }
@@ -88,28 +94,26 @@ public class ApiClient : MonoBehaviour
     {
         using (UnityWebRequest request = UnityWebRequest.Get($"{baseUrl}/leaderboard"))
         {
-            // If you later protect this route with Sanctum:
-            // request.SetRequestHeader("Authorization", "Bearer " + AuthToken);
-
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                string json = request.downloadHandler.text;
-                Debug.Log("Leaderboard response: " + json);
+                Debug.Log("Leaderboard response: " + request.downloadHandler.text);
 
-                LeaderboardWrapper data = JsonUtility.FromJson<LeaderboardWrapper>(json);
+                LeaderboardWrapper data =
+                    JsonUtility.FromJson<LeaderboardWrapper>(request.downloadHandler.text);
+
                 onSuccess?.Invoke(data);
             }
             else
             {
-                Debug.LogError("Leaderboard error: " + request.error);
+                Debug.LogError("Leaderboard error: " + request.downloadHandler.text);
                 onError?.Invoke(request.downloadHandler.text);
             }
         }
     }
 
-    // ---------- OPTIONAL: PLAYERS TEST ----------
+    // ---------- OPTIONAL TEST ----------
 
     public IEnumerator GetPlayersRaw(Action<string> onSuccess, Action<string> onError)
     {
@@ -118,13 +122,9 @@ public class ApiClient : MonoBehaviour
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
-            {
                 onSuccess?.Invoke(request.downloadHandler.text);
-            }
             else
-            {
-                onError?.Invoke(request.error);
-            }
+                onError?.Invoke(request.downloadHandler.text);
         }
     }
 }

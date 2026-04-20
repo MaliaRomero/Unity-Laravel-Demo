@@ -7,7 +7,7 @@ public class LeaderboardUI : MonoBehaviour
     public GameObject leaderboardEntryPrefab;
     public Transform leaderboardContainer;
     //public TextMeshProUGUI statusText;
-
+    /*
     private void OnEnable()
     {
         RefreshLeaderboard();
@@ -42,5 +42,5 @@ public class LeaderboardUI : MonoBehaviour
                 //statusText.text = "Error: " + err;
             }
         ));
-    }
+    }*/
 }
