@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class LaravelManager : MonoBehaviour
 {
@@ -13,9 +14,15 @@ public class LaravelManager : MonoBehaviour
     private string baseUrl = "http://localhost:8000/api";
 
     public UnityEvent StartGame;
-    //public UIManager UIM;
+
+    public string currentUsername;
 
     private Coroutine leaderboardCoroutine;
+
+    public LeaderboardUI leaderboardUI;
+
+
+    //public void UpdateTop5(LeaderboardEntry[] entries);
 
     public void StartLeaderboardLoop()
     {
@@ -61,6 +68,8 @@ public class LaravelManager : MonoBehaviour
 
                 savedToken = response.token;
 
+                currentUsername = username;
+
                 Debug.Log("Login Successful!");
                 StartGame?.Invoke();
                 StartLeaderboardLoop();
@@ -99,11 +108,11 @@ public class LaravelManager : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Score saved successfully");
+                Debug.Log("Score saved successfully" + score);
             }
             else
             {
-                Debug.LogError(www.downloadHandler.text);
+                Debug.LogError(www.downloadHandler.text);      
             }
         }
     }
@@ -134,7 +143,7 @@ public class LaravelManager : MonoBehaviour
                 LeaderboardWrapper data =
                     JsonUtility.FromJson<LeaderboardWrapper>(json);
 
-                //UIM.UpdateTop3(data.items);
+                leaderboardUI.UpdateTop5(data.items);
             }
             else
             {

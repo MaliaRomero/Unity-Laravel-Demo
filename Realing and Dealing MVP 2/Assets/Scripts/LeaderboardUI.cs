@@ -1,46 +1,97 @@
-    /*using UnityEngine;
+using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public class LeaderboardUI : MonoBehaviour
 {
-    [Header("UI")]
-    public GameObject leaderboardEntryPrefab;
-    public Transform laderboardContainer;
-    //public TextMeshProUGUI statusText;
+    // End screen called from GameManager, This is just leaderboard
+    [SerializeField]
+    GameObject leaderboard;
 
-    private void OnEnable()
+    //Score
+    [SerializeField]
+    TMPro.TMP_Text ScoreText;
+    int score;
+
+    //LEADERBOARD
+    [SerializeField] private TMP_Text top1NameText;
+    [SerializeField] private TMP_Text top1ScoreText;
+    [SerializeField] private TMP_Text top2NameText;
+    [SerializeField] private TMP_Text top2ScoreText;
+    [SerializeField] private TMP_Text top3NameText;
+    [SerializeField] private TMP_Text top3ScoreText;
+    [SerializeField] private TMP_Text top4NameText;
+    [SerializeField] private TMP_Text top4ScoreText;
+    [SerializeField] private TMP_Text top5NameText;
+    [SerializeField] private TMP_Text top5ScoreText;
+
+    void Start()
     {
-        RefreshLeaderboard();
+        GameManager gamemanager = GetComponent<GameManager>();
     }
 
-    public void RefreshLeaderboard()
+    public void DisplayLeaderboard()
     {
-        //statusText.text = "Loading leaderboard...";
-        StartCoroutine(ApiClient.Instance.GetLeaderboard(
-            onSuccess: (data) =>
-            {
-                //statusText.text = "Leaderboard loaded";
-
-                foreach (Transform child in leaderboardContainer)
-                    Destroy(child.gameObject);
-
-                if (data.items == null || data.items.Length == 0)
-                {
-                    //statusText.text = "No entries yet";
-                    return;
-                }
-
-                foreach (var entry in data.items)
-                {
-                    var go = Instantiate(leaderboardEntryPrefab, leaderboardContainer);
-                    var text = go.GetComponentInChildren<TextMeshProUGUI>();
-                    text.text = $"{entry.username} - {entry.score}";
-                }
-            },
-            onError: (err) =>
-            {
-                //statusText.text = "Error: " + err;
-            }
-        ));
+       leaderboard.SetActive(true);
     }
-}*/
+
+    public void UpdateTop5(LeaderboardEntry[] list)
+    {
+        if (list.Length > 0)
+        {
+            top1NameText.text = list[0].username;
+            top1ScoreText.text = list[0].score.ToString();
+        }
+        else
+        {
+            top1NameText.text = "---";
+            top1ScoreText.text = "---";
+        }
+
+        if (list.Length > 1)
+        {
+            top2NameText.text = list[1].username;
+            top2ScoreText.text = list[1].score.ToString();
+        }
+        else
+        {
+            top2NameText.text = "---";
+            top2ScoreText.text = "---";
+        }
+
+        if (list.Length > 2)
+        {
+            top3NameText.text = list[2].username;
+            top3ScoreText.text = list[2].score.ToString();
+        }
+        else
+        {
+            top3NameText.text = "---";
+            top3ScoreText.text = "---";
+        }
+        if (list.Length > 3)
+        {
+            top4NameText.text = list[3].username;
+            top4ScoreText.text = list[3].score.ToString();
+        }
+        else
+        {
+            top4NameText.text = "---";
+            top4ScoreText.text = "---";
+        }
+        if (list.Length > 4)
+        {
+            top5NameText.text = list[4].username;
+            top5ScoreText.text = list[4].score.ToString();
+        }
+        else
+        {
+            top5NameText.text = "---";
+            top5ScoreText.text = "---";
+        }
+    }
+}
