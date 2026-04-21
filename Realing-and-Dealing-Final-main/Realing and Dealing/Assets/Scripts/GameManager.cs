@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Audio;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class GameManager : MonoBehaviour
     public static PlayerController playerController;
 
     public static Roulette roulette;
+
+    public LaravelManager laravelManager;//ADDED
+
+    public LeaderboardUI leaderboardUI;//ADDED
 
     public Card card;
     public Deck deck;
@@ -267,12 +272,12 @@ public class GameManager : MonoBehaviour
 
     public void HideSkipDiscardButton ()
     {
-        skipDiscardButton.SetActive(false);//Turnn off skip discard button
+        skipDiscardButton.SetActive(false);//Turn off skip discard button
     }
 
     public void ShowSkipDiscardButton ()
     {
-        skipDiscardButton.SetActive(true);//Turnn off skip discard button
+        skipDiscardButton.SetActive(true);//Turn off skip discard button
     }
 
     //-------------------------UPDATE UI-----------------------------------------
@@ -354,9 +359,9 @@ public class GameManager : MonoBehaviour
             winLosePanel.SetActive(true);
             outOfBaitText.gameObject.SetActive(false);
             fullHandText.gameObject.SetActive(true);
-            Leaderboard.instance.SetLeaderboardEntry(playerController.points);
-            Leaderboard.instance.leaderboardCanvas.SetActive(true);
-            Leaderboard.instance.DisplayLeaderboard();
+            laravelManager.SendScore(playerController.points);
+            laravelManager.StopLeaderboardLoop();
+            leaderboardUI.DisplayLeaderboard();
             fullHandText.text = "Boy howdy, you've reached your fishing quota!\nFinal Catch: " + playerController.points + " Trophy Points!";
         }
         else if(playerController.baitCount <= 0)
@@ -366,9 +371,9 @@ public class GameManager : MonoBehaviour
             winLosePanel.SetActive(true);
             fullHandText.gameObject.SetActive(false);
             outOfBaitText.gameObject.SetActive(true);
-            Leaderboard.instance.SetLeaderboardEntry(playerController.points);
-            Leaderboard.instance.leaderboardCanvas.SetActive(true);
-            Leaderboard.instance.DisplayLeaderboard();
+            laravelManager.SendScore(playerController.points);
+            laravelManager.StopLeaderboardLoop();
+            leaderboardUI.DisplayLeaderboard();
             outOfBaitText.text = "Looks like them fishies emptied your tackle box.\n Final Catch: " + playerController.points + " Trophy Points!";
         } else {
             isPlayerTurn = false;  // Set the turn flag to false when ending the turn
@@ -410,7 +415,11 @@ public class GameManager : MonoBehaviour
         playerController.points = 0; // Reset trophy points
         UpdateTrophyPointsUI(playerController.points);
         winLosePanel.SetActive(false);
-        Leaderboard.instance.leaderboardCanvas.SetActive(false);
+        //Leaderboard.instance.leaderboardCanvas.SetActive(false);
         Debug.Log("Game has been reset!");
     }
 }
+
+
+
+
