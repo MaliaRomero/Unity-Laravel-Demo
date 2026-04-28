@@ -15,7 +15,7 @@ public class LeaderboardUI : MonoBehaviour
     //Score
     [SerializeField]
     TMPro.TMP_Text ScoreText;
-    int score;
+    public int score;
 
     //LEADERBOARD
     [SerializeField] private TMP_Text top1NameText;

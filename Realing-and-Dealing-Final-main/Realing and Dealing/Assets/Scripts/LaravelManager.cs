@@ -11,12 +11,11 @@ public class LaravelManager : MonoBehaviour
     [SerializeField] private TMP_InputField passwordField;
 
     private string savedToken;
-    private string baseUrl = "http://localhost:8000/api";
+    private string baseUrl = "http://127.0.0.1:8000/api";
 
     public UnityEvent StartGame;
 
     public string currentUsername;
-
     private Coroutine leaderboardCoroutine;
 
     public LeaderboardUI leaderboardUI;
@@ -128,7 +127,7 @@ public class LaravelManager : MonoBehaviour
         }
     }
 
-    IEnumerator FetchLeaderboard()
+    public IEnumerator FetchLeaderboard()
     {
 
         using (UnityWebRequest www =
@@ -151,7 +150,22 @@ public class LaravelManager : MonoBehaviour
             }
         }
     }
+    public void refreshButton()
+    {
+        int score = GameManager.playerController.points;
+        Debug.Log("Refresh clicked. Sending score: " + score);
+
+        StartCoroutine(RefreshAfterSave(score));
+    }
+
+    IEnumerator RefreshAfterSave(int score)
+    {
+        yield return SaveScoreRoutine(score);
+        yield return FetchLeaderboard();
+    }
 }
+
+
 
 // ---------------- DATA MODELS ----------------
 
