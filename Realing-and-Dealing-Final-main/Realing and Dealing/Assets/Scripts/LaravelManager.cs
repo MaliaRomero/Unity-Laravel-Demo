@@ -10,6 +10,10 @@ public class LaravelManager : MonoBehaviour
     [SerializeField] private TMP_InputField nameField;
     [SerializeField] private TMP_InputField passwordField;
 
+    public GameObject registerCanvas;
+
+    public GameObject loginCanvas;
+
     private string savedToken;
     private string baseUrl = "http://127.0.0.1:8000/api";
 
@@ -19,9 +23,6 @@ public class LaravelManager : MonoBehaviour
     private Coroutine leaderboardCoroutine;
 
     public LeaderboardUI leaderboardUI;
-
-
-    //public void UpdateTop5(LeaderboardEntry[] entries);
 
     public void StartLeaderboardLoop()
     {
@@ -49,6 +50,19 @@ public class LaravelManager : MonoBehaviour
             passwordField.text
         ));
     }
+
+    public void onRegisterPage()
+    {
+        registerCanvas.SetActive(true);
+        loginCanvas.SetActive(false);
+    }
+
+    public void onLoginPage()
+    {
+        loginCanvas.SetActive(true);
+        registerCanvas.SetActive(false);
+    }
+
 
     IEnumerator LoginRoutine(string username, string password)
     {
@@ -164,8 +178,6 @@ public class LaravelManager : MonoBehaviour
         yield return FetchLeaderboard();
     }
 }
-
-
 
 // ---------------- DATA MODELS ----------------
 

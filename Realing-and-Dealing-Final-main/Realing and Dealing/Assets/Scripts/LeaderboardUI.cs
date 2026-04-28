@@ -39,6 +39,11 @@ public class LeaderboardUI : MonoBehaviour
         leaderboard.SetActive(true);
     }
 
+    public void HideLeaderboard()
+    {
+        leaderboard.SetActive(false);
+    }
+
     public void UpdateTop5(LeaderboardEntry[] list)
     {
         if (list.Length > 0)
