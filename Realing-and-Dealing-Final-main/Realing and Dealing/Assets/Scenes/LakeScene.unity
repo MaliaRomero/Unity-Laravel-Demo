@@ -1055,8 +1055,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4282194707
+  m_fontColor: {r: 0.07450981, g: 0.10588236, b: 0.2392157, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3369,8 +3369,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4282916886
+  m_fontColor: {r: 0.08627451, g: 0.1254902, b: 0.28235295, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5641,7 +5641,7 @@ RectTransform:
   m_GameObject: {fileID: 421086378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.8962245, y: 2.8996875, z: 2.8996875}
+  m_LocalScale: {x: 5.477788, y: 2.6939058, z: 2.6939058}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 321821429}
@@ -5649,7 +5649,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 101}
+  m_AnchoredPosition: {x: 0, y: 124}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &421086380
@@ -8117,8 +8117,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 867527325}
-        m_TargetAssemblyTypeName: LoginRegister, Assembly-CSharp
-        m_MethodName: OnRegisterButton
+        m_TargetAssemblyTypeName: LaravelManager, Assembly-CSharp
+        m_MethodName: Register
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11737,6 +11737,9 @@ MonoBehaviour:
   passwordField: {fileID: 1721800530}
   registerCanvas: {fileID: 1393060387}
   loginCanvas: {fileID: 1860466087}
+  LoginDisplayText: {fileID: 1519739595}
+  RegisterDisplayText: {fileID: 0}
+  leaderboardUI: {fileID: 479267989}
   StartGame:
     m_PersistentCalls:
       m_Calls:
@@ -11753,7 +11756,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   currentUsername: 
-  leaderboardUI: {fileID: 479267989}
 --- !u!4 &867527326
 Transform:
   m_ObjectHideFlags: 0
@@ -15015,7 +15017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.9068604, y: -41}
+  m_AnchoredPosition: {x: 4.9068604, y: -52}
   m_SizeDelta: {x: 339.79, y: 55.957092}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &980939158
@@ -16163,8 +16165,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291471517
-  m_fontColor: {r: 0.6156863, g: 0.65882355, b: 0.79215693, a: 1}
+    rgba: 4282194707
+  m_fontColor: {r: 0.07450981, g: 0.10588236, b: 0.2392157, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -17970,7 +17972,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -10.999999}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1300722413
@@ -20802,7 +20804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -53.638, y: -255}
+  m_AnchoredPosition: {x: 0, y: -11}
   m_SizeDelta: {x: 217.9613, y: 56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1519739594
@@ -20835,8 +20837,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6ec42cb4eae995642a3e5b625328700b, type: 2}
+  m_sharedMaterial: {fileID: 107148971159700533, guid: 6ec42cb4eae995642a3e5b625328700b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -20860,8 +20862,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -20896,7 +20898,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -127.724976, w: 0}
+  m_margin: {x: -238.91806, y: 0, z: -242.3518, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -22746,8 +22748,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4282194707
+  m_fontColor: {r: 0.07450981, g: 0.10588236, b: 0.2392157, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23236,7 +23238,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.05719, y: -104.21503}
+  m_AnchoredPosition: {x: 4.05719, y: -115.21503}
   m_SizeDelta: {x: 339.79, y: 55.957092}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1721800528
@@ -24645,7 +24647,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -165}
+  m_AnchoredPosition: {x: 0, y: -176}
   m_SizeDelta: {x: 172, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1814588536

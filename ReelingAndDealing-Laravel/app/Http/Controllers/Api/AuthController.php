@@ -10,38 +10,52 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     public function login(Request $request)
-{
-    $request->validate([
-        'username' => 'required|string',
-        'password' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-    $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->first();
 
-    // AUTO REGISTER if not exists
-    if (!$user) {
-        $user = User::create([
-            'username' => $request->username,
-            'name' => $request->username, // optional display name
-            'password' => Hash::make($request->password),
-            'score' => 0,
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Invalid password'
+            ], 401);
+        }
+
+        $token = $user->createToken('unity-game-token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user
         ]);
     }
 
-    // CHECK PASSWORD
-    if (!Hash::check($request->password, $user->password)) {
+    public function register(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = User::create([
+            'username' => $request->username,
+            'name' => $request->username,
+            'password' => $request->password, // Laravel auto-hashes this 
+            'score' => 0,
+        ]);
+
         return response()->json([
-            'message' => 'Invalid login'
-        ], 401);
+            'message' => 'Account created successfully'
+        ], 201);
     }
-
-    $token = $user->createToken('unity-game-token')->plainTextToken;
-
-    return response()->json([
-        'token' => $token,
-        'user' => $user
-    ]);
-}
 
     public function leaderboard()
     {

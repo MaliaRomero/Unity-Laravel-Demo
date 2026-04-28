@@ -7,13 +7,17 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class LaravelManager : MonoBehaviour
 {
+//-----------------Inputs-----------------
     [SerializeField] private TMP_InputField nameField;
     [SerializeField] private TMP_InputField passwordField;
-
+//-----------------UI-----------------
     public GameObject registerCanvas;
-
     public GameObject loginCanvas;
+    public TextMeshProUGUI LoginDisplayText;
+    public TextMeshProUGUI RegisterDisplayText;
+    public LeaderboardUI leaderboardUI;
 
+//-----------------VARIABLES-----------------
     private string savedToken;
     private string baseUrl = "http://127.0.0.1:8000/api";
 
@@ -22,7 +26,7 @@ public class LaravelManager : MonoBehaviour
     public string currentUsername;
     private Coroutine leaderboardCoroutine;
 
-    public LeaderboardUI leaderboardUI;
+//-----------------LEADERBOARD-----------------
 
     public void StartLeaderboardLoop()
     {
@@ -41,16 +45,7 @@ public class LaravelManager : MonoBehaviour
         }
     }
 
-    // ---------------- LOGIN ----------------
-
-    public void Login()
-    {
-        StartCoroutine(LoginRoutine(
-            nameField.text,
-            passwordField.text
-        ));
-    }
-
+//-----------------LOGIN/REGISTER-----------------
     public void onRegisterPage()
     {
         registerCanvas.SetActive(true);
@@ -63,6 +58,22 @@ public class LaravelManager : MonoBehaviour
         registerCanvas.SetActive(false);
     }
 
+    public void Login()
+    {
+        StartCoroutine(LoginRoutine(
+            nameField.text,
+            passwordField.text
+        ));
+    }
+
+    public void Register()
+    {
+        Debug.Log("Register Button");
+        StartCoroutine(RegisterRoutine(
+            nameField.text,
+            passwordField.text
+        ));
+    }
 
     IEnumerator LoginRoutine(string username, string password)
     {
@@ -74,27 +85,79 @@ public class LaravelManager : MonoBehaviour
         {
             yield return www.SendWebRequest();
 
+            string responseText = www.downloadHandler.text;
+
             if (www.result == UnityWebRequest.Result.Success)
             {
                 AuthResponse response =
-                    JsonUtility.FromJson<AuthResponse>(www.downloadHandler.text);
+                    JsonUtility.FromJson<AuthResponse>(responseText);
 
                 savedToken = response.token;
-
                 currentUsername = username;
 
-                Debug.Log("Login Successful!");
                 StartGame?.Invoke();
                 StartLeaderboardLoop();
             }
             else
             {
-                Debug.LogError(www.downloadHandler.text);
+                Debug.LogError(responseText);
+
+                // Errors for UI
+                if (www.responseCode == 404)
+                {
+                    LoginDisplayText.text = "An account with that username does not exist!";
+                    LoginDisplayText.gameObject.SetActive(true);
+                }
+
+                else if (www.responseCode == 401)
+                {
+                    LoginDisplayText.text = "Incorrect password. Please try again!";
+                    LoginDisplayText.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.Log("Login failed.");
+                }
             }
         }
     }
 
-    // ---------------- SPRITE ----------------
+    IEnumerator RegisterRoutine(string username, string password)
+    {
+        Debug.Log("RegisterRouotine");
+        WWWForm form = new WWWForm();
+        form.AddField("username", username);
+        form.AddField("password", password);
+
+        using (UnityWebRequest www = UnityWebRequest.Post($"{baseUrl}/register", form))
+        {
+            yield return www.SendWebRequest();
+
+            string responseText = www.downloadHandler.text;
+
+            if (www.result == UnityWebRequest.Result.Success ||
+                www.responseCode == 201)
+            {
+                onLoginPage();
+                LoginDisplayText.text = "Account created successfully!";
+            }
+            else
+            {
+                Debug.LogError(responseText);
+
+                if (www.responseCode == 422)
+                {
+                    Debug.Log("Username already exists.");
+                }
+                else
+                {
+                    Debug.Log("Registration failed.");
+                }
+            }
+        }
+    }
+
+//-----------------SCORE-----------------
 
     public void SendScore(int score)
     {
@@ -130,7 +193,7 @@ public class LaravelManager : MonoBehaviour
         }
     }
 
-    // ---------------- LEADERBOARD ----------------
+//---------------- LEADERBOARD ----------------
 
     IEnumerator LeaderboardLoop(float refreshRate)
     {

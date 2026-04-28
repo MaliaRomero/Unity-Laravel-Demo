@@ -403,8 +403,7 @@ public class GameManager : MonoBehaviour
 
     // Main reset method
     public void ResetGame()
-    {   //Leaderboard.instance.SetLeaderboardEntry(playerController.points);
-        //rouletteWheel.SetActive(false);
+    {
         PlayClickSound();
         isPlayerTurn = true;
         ResetAllCardsInHand();
