@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     //-----------------VARIABLES FOR SOUND-------------------------
 
     public GameObject musicObject;
-    private AudioSource bgMusicSource; // Example for background music
+    private AudioSource bgMusicSource;
     public AudioSource clickAudioSource;
     public AudioSource errorAudioSource;
     public AudioSource fishingAudioSource;
@@ -414,6 +414,7 @@ public class GameManager : MonoBehaviour
         playerController.points = 0; // Reset trophy points
         UpdateTrophyPointsUI(playerController.points);
         winLosePanel.SetActive(false);
+        leaderboardUI.HideLeaderboard();
         //Leaderboard.instance.leaderboardCanvas.SetActive(false);
         Debug.Log("Game has been reset!");
     }

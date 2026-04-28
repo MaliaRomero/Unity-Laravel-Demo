@@ -7,17 +7,25 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class LaravelManager : MonoBehaviour
 {
-//-----------------Inputs-----------------
+    //-----------------Inputs-----------------
+    //Login screen
     [SerializeField] private TMP_InputField nameField;
     [SerializeField] private TMP_InputField passwordField;
-//-----------------UI-----------------
+
+    //Register screen
+    public TMP_InputField newNameField;
+    public TMP_InputField newPasswordField;
+    public TMP_InputField newEmailField;
+    public TMP_InputField newConfirmEmailField;
+
+    //-----------------UI-----------------
     public GameObject registerCanvas;
     public GameObject loginCanvas;
     public TextMeshProUGUI LoginDisplayText;
     public TextMeshProUGUI RegisterDisplayText;
     public LeaderboardUI leaderboardUI;
 
-//-----------------VARIABLES-----------------
+    //-----------------VARIABLES-----------------
     private string savedToken;
     private string baseUrl = "http://127.0.0.1:8000/api";
 
@@ -26,7 +34,7 @@ public class LaravelManager : MonoBehaviour
     public string currentUsername;
     private Coroutine leaderboardCoroutine;
 
-//-----------------LEADERBOARD-----------------
+    //-----------------LEADERBOARD-----------------
 
     public void StartLeaderboardLoop()
     {
@@ -45,7 +53,7 @@ public class LaravelManager : MonoBehaviour
         }
     }
 
-//-----------------LOGIN/REGISTER-----------------
+    //-----------------LOGIN/REGISTER-----------------
     public void onRegisterPage()
     {
         registerCanvas.SetActive(true);
@@ -69,10 +77,34 @@ public class LaravelManager : MonoBehaviour
     public void Register()
     {
         Debug.Log("Register Button");
-        StartCoroutine(RegisterRoutine(
-            nameField.text,
-            passwordField.text
-        ));
+
+        if (string.IsNullOrWhiteSpace(newNameField.text) ||
+            string.IsNullOrWhiteSpace(newEmailField.text) ||
+            string.IsNullOrWhiteSpace(newConfirmEmailField.text) ||
+            string.IsNullOrWhiteSpace(newPasswordField.text))
+        {
+            RegisterDisplayText.text = "All fields are required.";
+            return;
+        }
+        
+        //Confirm email is the same
+        if (newEmailField.text != newConfirmEmailField.text)
+        {
+            RegisterDisplayText.text = "Email does not match.";
+        }
+        else if (newPasswordField.text.Length < 6)
+        {
+            RegisterDisplayText.text = "Password must be at least 6 characters.";
+        }
+        else
+        {
+            RegisterDisplayText.text = "Registering";
+            StartCoroutine(RegisterRoutine(
+            newNameField.text,
+            //emailField.text,
+            newPasswordField.text
+            ));
+        }
     }
 
     IEnumerator LoginRoutine(string username, string password)
@@ -147,11 +179,11 @@ public class LaravelManager : MonoBehaviour
 
                 if (www.responseCode == 422)
                 {
-                    Debug.Log("Username already exists.");
+                    RegisterDisplayText.text = "Username already exists.";
                 }
                 else
                 {
-                    Debug.Log("Registration failed.");
+                    RegisterDisplayText.text = "Registration failed. Likely server error.";
                 }
             }
         }
