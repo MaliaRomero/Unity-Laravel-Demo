@@ -101,7 +101,7 @@ public class LaravelManager : MonoBehaviour
             RegisterDisplayText.text = "Registering";
             StartCoroutine(RegisterRoutine(
             newNameField.text,
-            //emailField.text,
+            newEmailField.text,
             newPasswordField.text
             ));
         }
@@ -146,6 +146,10 @@ public class LaravelManager : MonoBehaviour
                     LoginDisplayText.text = "Incorrect password. Please try again!";
                     LoginDisplayText.gameObject.SetActive(true);
                 }
+                else if (www.responseCode == 403)
+                {
+                    LoginDisplayText.text = "Please verify your email before logging in.";
+                }
                 else
                 {
                     Debug.Log("Login failed.");
@@ -154,11 +158,12 @@ public class LaravelManager : MonoBehaviour
         }
     }
 
-    IEnumerator RegisterRoutine(string username, string password)
+    IEnumerator RegisterRoutine(string username, string email, string password)
     {
-        Debug.Log("RegisterRouotine");
+        Debug.Log("RegisterRoutine");
         WWWForm form = new WWWForm();
         form.AddField("username", username);
+        form.AddField("email", email);
         form.AddField("password", password);
 
         using (UnityWebRequest www = UnityWebRequest.Post($"{baseUrl}/register", form))

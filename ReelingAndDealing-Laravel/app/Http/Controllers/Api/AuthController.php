@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -30,6 +32,12 @@ class AuthController extends Controller
             ], 401);
         }
 
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => 'Email not verified'
+            ], 403);
+        }        
+
         $token = $user->createToken('unity-game-token')->plainTextToken;
 
         return response()->json([
@@ -42,20 +50,25 @@ class AuthController extends Controller
     {
         $request->validate([
             'username' => 'required|string|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
         ]);
-
+    
         $user = User::create([
             'username' => $request->username,
             'name' => $request->username,
-            'password' => $request->password, // Laravel auto-hashes this 
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
             'score' => 0,
         ]);
-
+    
+        $user->sendEmailVerificationNotification();
+    
         return response()->json([
             'message' => 'Account created successfully'
         ], 201);
     }
+    
 
     public function leaderboard()
     {
